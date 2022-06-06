@@ -40,7 +40,7 @@ class PathSocket {
   WebSocket? _webSocket;
   Timer? _pulseTimer;
   Timer? _retryTimer;
-  bool? _isRetry;
+  bool? _canRetry;
 
   /// 建立连接
   Future connect({
@@ -49,7 +49,7 @@ class PathSocket {
   }) async {
     this.token = token;
     this.userID = userID;
-    _isRetry = true;
+    _canRetry = true;
     connectListener?.connecting();
     String url = Uri.decodeFull(
       Uri(
@@ -65,24 +65,27 @@ class PathSocket {
       ..listen(
         _receiveData,
         onError: (error) {
-          _retryConnect();
           connectListener?.error(error);
         },
         onDone: () {
-          disconnect();
+          disconnect(canRetry: true);
+          _retryConnect();
           connectListener?.close();
         },
         cancelOnError: true,
       );
     connectListener?.success();
     _openPulse();
+    _cancelRetry();
   }
 
   /// 断开连接
-  Future disconnect() async {
+  Future disconnect({
+    bool canRetry = false,
+  }) async {
     _closePulse();
     _cancelRetry();
-    _isRetry = false;
+    _canRetry = canRetry;
     await _webSocket?.close();
     _webSocket = null;
   }
@@ -138,7 +141,7 @@ class PathSocket {
   /// 重试连接
   void _retryConnect() {
     _cancelRetry();
-    if (_isRetry == false) return;
+    if (_canRetry == false) return;
     _retryTimer = Timer(
       retryDuration,
       () {
@@ -284,15 +287,15 @@ class PathSocket {
   void _sendMsgReceipt(BodyResp bodyResp) {
     int errCode = bodyResp.errCode;
     String errMsg = bodyResp.errMsg;
+    SendMsgResp resp = SendMsgResp.fromBuffer(
+      bodyResp.data,
+    );
     if (errCode == 0) {
-      SendMsgResp resp = SendMsgResp.fromBuffer(
-        bodyResp.data,
-      );
       sendMsgListener?.success(resp);
     } else if (errCode == 1) {
-      sendMsgListener?.failed(errMsg);
+      sendMsgListener?.failed(resp.clientMsgID, errMsg);
     } else if (errCode == 2) {
-      sendMsgListener?.limit(errMsg);
+      sendMsgListener?.limit(resp.clientMsgID, errMsg);
     }
   }
 

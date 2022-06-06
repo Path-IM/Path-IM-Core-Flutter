@@ -3,8 +3,8 @@ import 'package:path_im_core_flutter/src/proto/msg.pb.dart';
 /// 发送消息监听
 class SendMsgListener {
   final Function(SendMsgResp sendMsgResp)? onSuccess; // 发送成功
-  final Function(String errMsg)? onFailed; // 发送失败
-  final Function(String errMsg)? onLimit; // 发送限流
+  final Function(String clientMsgID, String errMsg)? onFailed; // 发送失败
+  final Function(String clientMsgID, String errMsg)? onLimit; // 发送限流
 
   SendMsgListener({
     this.onSuccess,
@@ -16,11 +16,11 @@ class SendMsgListener {
     if (onSuccess != null) onSuccess!(sendMsgResp);
   }
 
-  void failed(String errMsg) {
-    if (onFailed != null) onFailed!(errMsg);
+  void failed(String clientMsgID, String errMsg) {
+    if (onFailed != null) onFailed!(clientMsgID, errMsg);
   }
 
-  void limit(String errMsg) {
-    if (onLimit != null) onLimit!(errMsg);
+  void limit(String clientMsgID, String errMsg) {
+    if (onLimit != null) onLimit!(clientMsgID, errMsg);
   }
 }
