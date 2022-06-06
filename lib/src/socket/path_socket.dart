@@ -67,9 +67,15 @@ class PathSocket {
         onError: (error) {
           connectListener?.error(error);
         },
-        onDone: () {
-          disconnect(canRetry: true);
-          _retryConnect();
+        onDone: () async {
+          _closePulse();
+          if (_webSocket != null) {
+            await _webSocket?.close();
+            _webSocket = null;
+          }
+          if (_canRetry == true) {
+            _retryConnect();
+          }
           connectListener?.close();
         },
         cancelOnError: true,
@@ -80,12 +86,10 @@ class PathSocket {
   }
 
   /// 断开连接
-  Future disconnect({
-    bool canRetry = false,
-  }) async {
+  Future disconnect() async {
     _closePulse();
     _cancelRetry();
-    _canRetry = canRetry;
+    _canRetry = false;
     await _webSocket?.close();
     _webSocket = null;
   }
@@ -118,7 +122,6 @@ class PathSocket {
       );
     }
 
-    _closePulse();
     getSeq();
     getGroupSeq();
     _pulseTimer = Timer.periodic(
@@ -140,8 +143,6 @@ class PathSocket {
 
   /// 重试连接
   void _retryConnect() {
-    _cancelRetry();
-    if (_canRetry == false) return;
     _retryTimer = Timer(
       retryDuration,
       () {
