@@ -51,12 +51,17 @@ class PathSocket {
     this.userID = userID;
     _isRetry = true;
     connectListener?.connecting();
-    Uri uri = Uri(path: wsUrl, queryParameters: {
-      "token": token,
-      "userID": userID,
-      "platform": PathProtocol.getPlatform(),
-    });
-    _webSocket = await WebSocket.connect(uri.toString())
+    String url = Uri.decodeFull(
+      Uri(
+        path: wsUrl,
+        queryParameters: {
+          "token": token,
+          "userID": userID,
+          "platform": PathProtocol.getPlatform(),
+        },
+      ).toString(),
+    );
+    _webSocket = await WebSocket.connect(url)
       ..listen(
         _receiveData,
         onError: (error) {
@@ -170,10 +175,16 @@ class PathSocket {
         _sendMsgReceipt(bodyResp);
         break;
       case PathProtocol.receivePushMsg: // 接收推送消息
-        _receivePushMsg(MsgData.fromBuffer(bodyResp.data));
+        MsgData msg = MsgData.fromBuffer(
+          bodyResp.data,
+        );
+        _receivePushMsg(msg);
         break;
       case PathProtocol.receivePushGroupMsg: // 接收推送群聊消息
-        _receivePushGroupMsg(MsgData.fromBuffer(bodyResp.data));
+        MsgData msg = MsgData.fromBuffer(
+          bodyResp.data,
+        );
+        _receivePushGroupMsg(msg);
         break;
     }
   }
@@ -271,15 +282,17 @@ class PathSocket {
 
   /// 发送消息回执
   void _sendMsgReceipt(BodyResp bodyResp) {
-    SendMsgResp resp = SendMsgResp.fromBuffer(
-      bodyResp.data,
-    );
-    if (bodyResp.errCode == 0) {
-      sendMsgListener?.success(resp.clientMsgID);
-    } else if (bodyResp.errCode == 1) {
-      sendMsgListener?.failed(resp.clientMsgID);
-    } else if (bodyResp.errCode == 2) {
-      sendMsgListener?.limit(resp.clientMsgID);
+    int errCode = bodyResp.errCode;
+    String errMsg = bodyResp.errMsg;
+    if (errCode == 0) {
+      SendMsgResp resp = SendMsgResp.fromBuffer(
+        bodyResp.data,
+      );
+      sendMsgListener?.success(resp);
+    } else if (errCode == 1) {
+      sendMsgListener?.failed(errMsg);
+    } else if (errCode == 2) {
+      sendMsgListener?.limit(errMsg);
     }
   }
 
