@@ -30,8 +30,8 @@ const MsgData$json = const {
     const {'1': 'contentType', '3': 6, '4': 1, '5': 13, '10': 'contentType'},
     const {'1': 'content', '3': 7, '4': 1, '5': 12, '10': 'content'},
     const {'1': 'atUserIDList', '3': 8, '4': 3, '5': 9, '10': 'atUserIDList'},
-    const {'1': 'clientTime', '3': 9, '4': 1, '5': 13, '10': 'clientTime'},
-    const {'1': 'serverTime', '3': 10, '4': 1, '5': 13, '10': 'serverTime'},
+    const {'1': 'clientTime', '3': 9, '4': 1, '5': 3, '10': 'clientTime'},
+    const {'1': 'serverTime', '3': 10, '4': 1, '5': 3, '10': 'serverTime'},
     const {'1': 'seq', '3': 11, '4': 1, '5': 13, '10': 'seq'},
     const {'1': 'offlinePush', '3': 12, '4': 1, '5': 11, '6': '.pb.OfflinePush', '10': 'offlinePush'},
     const {'1': 'msgOptions', '3': 13, '4': 1, '5': 11, '6': '.pb.MsgOptions', '10': 'msgOptions'},
@@ -39,7 +39,7 @@ const MsgData$json = const {
 };
 
 /// Descriptor for `MsgData`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List msgDataDescriptor = $convert.base64Decode('CgdNc2dEYXRhEiAKC2NsaWVudE1zZ0lEGAEgASgJUgtjbGllbnRNc2dJRBIgCgtzZXJ2ZXJNc2dJRBgCIAEoCVILc2VydmVyTXNnSUQSKgoQY29udmVyc2F0aW9uVHlwZRgDIAEoDVIQY29udmVyc2F0aW9uVHlwZRIWCgZzZW5kSUQYBCABKAlSBnNlbmRJRBIcCglyZWNlaXZlSUQYBSABKAlSCXJlY2VpdmVJRBIgCgtjb250ZW50VHlwZRgGIAEoDVILY29udGVudFR5cGUSGAoHY29udGVudBgHIAEoDFIHY29udGVudBIiCgxhdFVzZXJJRExpc3QYCCADKAlSDGF0VXNlcklETGlzdBIeCgpjbGllbnRUaW1lGAkgASgNUgpjbGllbnRUaW1lEh4KCnNlcnZlclRpbWUYCiABKA1SCnNlcnZlclRpbWUSEAoDc2VxGAsgASgNUgNzZXESMQoLb2ZmbGluZVB1c2gYDCABKAsyDy5wYi5PZmZsaW5lUHVzaFILb2ZmbGluZVB1c2gSLgoKbXNnT3B0aW9ucxgNIAEoCzIOLnBiLk1zZ09wdGlvbnNSCm1zZ09wdGlvbnM=');
+final $typed_data.Uint8List msgDataDescriptor = $convert.base64Decode('CgdNc2dEYXRhEiAKC2NsaWVudE1zZ0lEGAEgASgJUgtjbGllbnRNc2dJRBIgCgtzZXJ2ZXJNc2dJRBgCIAEoCVILc2VydmVyTXNnSUQSKgoQY29udmVyc2F0aW9uVHlwZRgDIAEoDVIQY29udmVyc2F0aW9uVHlwZRIWCgZzZW5kSUQYBCABKAlSBnNlbmRJRBIcCglyZWNlaXZlSUQYBSABKAlSCXJlY2VpdmVJRBIgCgtjb250ZW50VHlwZRgGIAEoDVILY29udGVudFR5cGUSGAoHY29udGVudBgHIAEoDFIHY29udGVudBIiCgxhdFVzZXJJRExpc3QYCCADKAlSDGF0VXNlcklETGlzdBIeCgpjbGllbnRUaW1lGAkgASgDUgpjbGllbnRUaW1lEh4KCnNlcnZlclRpbWUYCiABKANSCnNlcnZlclRpbWUSEAoDc2VxGAsgASgNUgNzZXESMQoLb2ZmbGluZVB1c2gYDCABKAsyDy5wYi5PZmZsaW5lUHVzaFILb2ZmbGluZVB1c2gSLgoKbXNnT3B0aW9ucxgNIAEoCzIOLnBiLk1zZ09wdGlvbnNSCm1zZ09wdGlvbnM=');
 @$core.Deprecated('Use offlinePushDescriptor instead')
 const OfflinePush$json = const {
   '1': 'OfflinePush',
@@ -76,9 +76,9 @@ const SendMsgResp$json = const {
     const {'1': 'conversationType', '3': 3, '4': 1, '5': 13, '10': 'conversationType'},
     const {'1': 'receiveID', '3': 4, '4': 1, '5': 9, '10': 'receiveID'},
     const {'1': 'contentType', '3': 5, '4': 1, '5': 13, '10': 'contentType'},
-    const {'1': 'serverTime', '3': 6, '4': 1, '5': 13, '10': 'serverTime'},
+    const {'1': 'serverTime', '3': 6, '4': 1, '5': 3, '10': 'serverTime'},
   ],
 };
 
 /// Descriptor for `SendMsgResp`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List sendMsgRespDescriptor = $convert.base64Decode('CgtTZW5kTXNnUmVzcBIgCgtjbGllbnRNc2dJRBgBIAEoCVILY2xpZW50TXNnSUQSIAoLc2VydmVyTXNnSUQYAiABKAlSC3NlcnZlck1zZ0lEEioKEGNvbnZlcnNhdGlvblR5cGUYAyABKA1SEGNvbnZlcnNhdGlvblR5cGUSHAoJcmVjZWl2ZUlEGAQgASgJUglyZWNlaXZlSUQSIAoLY29udGVudFR5cGUYBSABKA1SC2NvbnRlbnRUeXBlEh4KCnNlcnZlclRpbWUYBiABKA1SCnNlcnZlclRpbWU=');
+final $typed_data.Uint8List sendMsgRespDescriptor = $convert.base64Decode('CgtTZW5kTXNnUmVzcBIgCgtjbGllbnRNc2dJRBgBIAEoCVILY2xpZW50TXNnSUQSIAoLc2VydmVyTXNnSUQYAiABKAlSC3NlcnZlck1zZ0lEEioKEGNvbnZlcnNhdGlvblR5cGUYAyABKA1SEGNvbnZlcnNhdGlvblR5cGUSHAoJcmVjZWl2ZUlEGAQgASgJUglyZWNlaXZlSUQSIAoLY29udGVudFR5cGUYBSABKA1SC2NvbnRlbnRUeXBlEh4KCnNlcnZlclRpbWUYBiABKANSCnNlcnZlclRpbWU=');

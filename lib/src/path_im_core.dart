@@ -6,6 +6,7 @@ import 'package:path_im_core_flutter/src/listener/receive_msg_listener.dart';
 import 'package:path_im_core_flutter/src/listener/send_msg_listener.dart';
 import 'package:path_im_core_flutter/src/proto/msg.pb.dart';
 import 'package:path_im_core_flutter/src/socket/path_socket.dart';
+import 'package:fixnum/fixnum.dart';
 
 class PathIMCore {
   factory PathIMCore() => _getInstance();
@@ -58,6 +59,14 @@ class PathIMCore {
   /// 登出
   void logout() async {
     await _pathSocket?.disconnect();
+    sendSingleMsg(
+      clientMsgID: "",
+      sendID: "",
+      receiveID: "",
+      contentType: 1,
+      content: [],
+      clientTime: Int64(1231231232),
+    );
   }
 
   /// 是否登录
@@ -73,7 +82,7 @@ class PathIMCore {
     required int contentType,
     required List<int> content,
     List<String>? atUserIDList,
-    required int clientTime,
+    required Int64 clientTime,
     OfflinePush? offlinePush,
     MsgOptions? msgOptions,
   }) {
@@ -105,7 +114,7 @@ class PathIMCore {
     required int contentType,
     required List<int> content,
     List<String>? atUserIDList,
-    required int clientTime,
+    required Int64 clientTime,
     OfflinePush? offlinePush,
     MsgOptions? msgOptions,
   }) {

@@ -7,6 +7,7 @@
 
 import 'dart:core' as $core;
 
+import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class SendMsgReq extends $pb.GeneratedMessage {
@@ -68,8 +69,8 @@ class MsgData extends $pb.GeneratedMessage {
     ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'contentType', $pb.PbFieldType.OU3, protoName: 'contentType')
     ..a<$core.List<$core.int>>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content', $pb.PbFieldType.OY)
     ..pPS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atUserIDList', protoName: 'atUserIDList')
-    ..a<$core.int>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'clientTime', $pb.PbFieldType.OU3, protoName: 'clientTime')
-    ..a<$core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'serverTime', $pb.PbFieldType.OU3, protoName: 'serverTime')
+    ..aInt64(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'clientTime', protoName: 'clientTime')
+    ..aInt64(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'serverTime', protoName: 'serverTime')
     ..a<$core.int>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'seq', $pb.PbFieldType.OU3)
     ..aOM<OfflinePush>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'offlinePush', protoName: 'offlinePush', subBuilder: OfflinePush.create)
     ..aOM<MsgOptions>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'msgOptions', protoName: 'msgOptions', subBuilder: MsgOptions.create)
@@ -86,8 +87,8 @@ class MsgData extends $pb.GeneratedMessage {
     $core.int? contentType,
     $core.List<$core.int>? content,
     $core.Iterable<$core.String>? atUserIDList,
-    $core.int? clientTime,
-    $core.int? serverTime,
+    $fixnum.Int64? clientTime,
+    $fixnum.Int64? serverTime,
     $core.int? seq,
     OfflinePush? offlinePush,
     MsgOptions? msgOptions,
@@ -222,18 +223,18 @@ class MsgData extends $pb.GeneratedMessage {
   $core.List<$core.String> get atUserIDList => $_getList(7);
 
   @$pb.TagNumber(9)
-  $core.int get clientTime => $_getIZ(8);
+  $fixnum.Int64 get clientTime => $_getI64(8);
   @$pb.TagNumber(9)
-  set clientTime($core.int v) { $_setUnsignedInt32(8, v); }
+  set clientTime($fixnum.Int64 v) { $_setInt64(8, v); }
   @$pb.TagNumber(9)
   $core.bool hasClientTime() => $_has(8);
   @$pb.TagNumber(9)
   void clearClientTime() => clearField(9);
 
   @$pb.TagNumber(10)
-  $core.int get serverTime => $_getIZ(9);
+  $fixnum.Int64 get serverTime => $_getI64(9);
   @$pb.TagNumber(10)
-  set serverTime($core.int v) { $_setUnsignedInt32(9, v); }
+  set serverTime($fixnum.Int64 v) { $_setInt64(9, v); }
   @$pb.TagNumber(10)
   $core.bool hasServerTime() => $_has(9);
   @$pb.TagNumber(10)
@@ -470,7 +471,7 @@ class SendMsgResp extends $pb.GeneratedMessage {
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'conversationType', $pb.PbFieldType.OU3, protoName: 'conversationType')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'receiveID', protoName: 'receiveID')
     ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'contentType', $pb.PbFieldType.OU3, protoName: 'contentType')
-    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'serverTime', $pb.PbFieldType.OU3, protoName: 'serverTime')
+    ..aInt64(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'serverTime', protoName: 'serverTime')
     ..hasRequiredFields = false
   ;
 
@@ -481,7 +482,7 @@ class SendMsgResp extends $pb.GeneratedMessage {
     $core.int? conversationType,
     $core.String? receiveID,
     $core.int? contentType,
-    $core.int? serverTime,
+    $fixnum.Int64? serverTime,
   }) {
     final _result = create();
     if (clientMsgID != null) {
@@ -571,9 +572,9 @@ class SendMsgResp extends $pb.GeneratedMessage {
   void clearContentType() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.int get serverTime => $_getIZ(5);
+  $fixnum.Int64 get serverTime => $_getI64(5);
   @$pb.TagNumber(6)
-  set serverTime($core.int v) { $_setUnsignedInt32(5, v); }
+  set serverTime($fixnum.Int64 v) { $_setInt64(5, v); }
   @$pb.TagNumber(6)
   $core.bool hasServerTime() => $_has(5);
   @$pb.TagNumber(6)
