@@ -59,14 +59,6 @@ class PathIMCore {
   /// 登出
   void logout() async {
     await _pathSocket?.disconnect();
-    sendSingleMsg(
-      clientMsgID: "",
-      sendID: "",
-      receiveID: "",
-      contentType: 1,
-      content: [],
-      clientTime: Int64(1231231232),
-    );
   }
 
   /// 是否登录
@@ -84,7 +76,7 @@ class PathIMCore {
     List<String>? atUserIDList,
     required Int64 clientTime,
     OfflinePush? offlinePush,
-    MsgOptions? msgOptions,
+    required MsgOptions msgOptions,
   }) {
     SendMsgReq sendMsgReq = SendMsgReq(
       msgData: MsgData(
@@ -116,7 +108,7 @@ class PathIMCore {
     List<String>? atUserIDList,
     required Int64 clientTime,
     OfflinePush? offlinePush,
-    MsgOptions? msgOptions,
+    required MsgOptions msgOptions,
   }) {
     SendMsgReq sendMsgReq = SendMsgReq(
       msgData: MsgData(
