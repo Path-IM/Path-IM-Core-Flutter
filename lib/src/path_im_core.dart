@@ -46,7 +46,7 @@ class PathIMCore {
   }
 
   /// 登录
-  void login({
+  Future login({
     required String token,
     required String userID,
   }) async {
@@ -57,7 +57,7 @@ class PathIMCore {
   }
 
   /// 登出
-  void logout() async {
+  Future logout() async {
     await _pathSocket?.disconnect();
   }
 
