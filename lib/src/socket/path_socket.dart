@@ -268,7 +268,7 @@ class PathSocket {
         seqList: seqList,
       );
       sendData(
-        PathProtocol.pullMsgBySeqList,
+        PathProtocol.pullMsgByGroupSeqList,
         pullGroupSeqListReq.writeToBuffer(),
       );
     }
