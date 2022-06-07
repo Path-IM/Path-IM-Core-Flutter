@@ -101,7 +101,7 @@ class PathIMCore {
       ),
     );
     _pathSocket?.sendData(
-      PathProtocol.sendMsgAndReceipt,
+      PathProtocol.sendAndReceiptMsg,
       sendMsgReq.writeToBuffer(),
     );
   }
@@ -133,7 +133,7 @@ class PathIMCore {
       ),
     );
     _pathSocket?.sendData(
-      PathProtocol.sendMsgAndReceipt,
+      PathProtocol.sendAndReceiptMsg,
       sendMsgReq.writeToBuffer(),
     );
   }

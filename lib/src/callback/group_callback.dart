@@ -1,7 +1,7 @@
-/// 获取当前用户所在群聊的必需参数
+/// 获取用户群聊必需参数
 class GroupCallback {
-  final Future<List<String>> Function() onGroupIDList; // 返回所在群聊ID列表
-  final Future<int> Function(String groupID) onGroupMaxSeq; // 返回所在群聊最大Seq
+  final Future<List<String>> Function() onGroupIDList; // 返回用户群聊IDList
+  final Future<int> Function(String groupID) onGroupMaxSeq; // 返回用户群聊MaxSeq
 
   GroupCallback({
     required this.onGroupIDList,

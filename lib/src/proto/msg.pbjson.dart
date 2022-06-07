@@ -60,13 +60,14 @@ const MsgOptions$json = const {
   '2': const [
     const {'1': 'persistent', '3': 1, '4': 1, '5': 8, '10': 'persistent'},
     const {'1': 'history', '3': 2, '4': 1, '5': 8, '10': 'history'},
-    const {'1': 'unreadCount', '3': 3, '4': 1, '5': 8, '10': 'unreadCount'},
-    const {'1': 'updateConversation', '3': 4, '4': 1, '5': 8, '10': 'updateConversation'},
+    const {'1': 'local', '3': 3, '4': 1, '5': 8, '10': 'local'},
+    const {'1': 'updateUnreadCount', '3': 4, '4': 1, '5': 8, '10': 'updateUnreadCount'},
+    const {'1': 'updateConversation', '3': 5, '4': 1, '5': 8, '10': 'updateConversation'},
   ],
 };
 
 /// Descriptor for `MsgOptions`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List msgOptionsDescriptor = $convert.base64Decode('CgpNc2dPcHRpb25zEh4KCnBlcnNpc3RlbnQYASABKAhSCnBlcnNpc3RlbnQSGAoHaGlzdG9yeRgCIAEoCFIHaGlzdG9yeRIgCgt1bnJlYWRDb3VudBgDIAEoCFILdW5yZWFkQ291bnQSLgoSdXBkYXRlQ29udmVyc2F0aW9uGAQgASgIUhJ1cGRhdGVDb252ZXJzYXRpb24=');
+final $typed_data.Uint8List msgOptionsDescriptor = $convert.base64Decode('CgpNc2dPcHRpb25zEh4KCnBlcnNpc3RlbnQYASABKAhSCnBlcnNpc3RlbnQSGAoHaGlzdG9yeRgCIAEoCFIHaGlzdG9yeRIUCgVsb2NhbBgDIAEoCFIFbG9jYWwSLAoRdXBkYXRlVW5yZWFkQ291bnQYBCABKAhSEXVwZGF0ZVVucmVhZENvdW50Ei4KEnVwZGF0ZUNvbnZlcnNhdGlvbhgFIAEoCFISdXBkYXRlQ29udmVyc2F0aW9u');
 @$core.Deprecated('Use sendMsgRespDescriptor instead')
 const SendMsgResp$json = const {
   '1': 'SendMsgResp',

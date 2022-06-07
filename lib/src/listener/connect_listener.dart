@@ -2,7 +2,7 @@
 class ConnectListener {
   final Function()? onConnecting; // 连接中
   final Function()? onSuccess; // 连接成功
-  final Function(dynamic error)? onError; // 连接错误
+  final Function(dynamic error)? onError; // 发生错误
   final Function()? onClose; // 连接关闭
 
   ConnectListener({

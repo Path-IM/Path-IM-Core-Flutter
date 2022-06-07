@@ -379,8 +379,9 @@ class MsgOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MsgOptions', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'pb'), createEmptyInstance: create)
     ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'persistent')
     ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'history')
-    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unreadCount', protoName: 'unreadCount')
-    ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateConversation', protoName: 'updateConversation')
+    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'local')
+    ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateUnreadCount', protoName: 'updateUnreadCount')
+    ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateConversation', protoName: 'updateConversation')
     ..hasRequiredFields = false
   ;
 
@@ -388,7 +389,8 @@ class MsgOptions extends $pb.GeneratedMessage {
   factory MsgOptions({
     $core.bool? persistent,
     $core.bool? history,
-    $core.bool? unreadCount,
+    $core.bool? local,
+    $core.bool? updateUnreadCount,
     $core.bool? updateConversation,
   }) {
     final _result = create();
@@ -398,8 +400,11 @@ class MsgOptions extends $pb.GeneratedMessage {
     if (history != null) {
       _result.history = history;
     }
-    if (unreadCount != null) {
-      _result.unreadCount = unreadCount;
+    if (local != null) {
+      _result.local = local;
+    }
+    if (updateUnreadCount != null) {
+      _result.updateUnreadCount = updateUnreadCount;
     }
     if (updateConversation != null) {
       _result.updateConversation = updateConversation;
@@ -446,22 +451,31 @@ class MsgOptions extends $pb.GeneratedMessage {
   void clearHistory() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.bool get unreadCount => $_getBF(2);
+  $core.bool get local => $_getBF(2);
   @$pb.TagNumber(3)
-  set unreadCount($core.bool v) { $_setBool(2, v); }
+  set local($core.bool v) { $_setBool(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasUnreadCount() => $_has(2);
+  $core.bool hasLocal() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUnreadCount() => clearField(3);
+  void clearLocal() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.bool get updateConversation => $_getBF(3);
+  $core.bool get updateUnreadCount => $_getBF(3);
   @$pb.TagNumber(4)
-  set updateConversation($core.bool v) { $_setBool(3, v); }
+  set updateUnreadCount($core.bool v) { $_setBool(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasUpdateConversation() => $_has(3);
+  $core.bool hasUpdateUnreadCount() => $_has(3);
   @$pb.TagNumber(4)
-  void clearUpdateConversation() => clearField(4);
+  void clearUpdateUnreadCount() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.bool get updateConversation => $_getBF(4);
+  @$pb.TagNumber(5)
+  set updateConversation($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasUpdateConversation() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearUpdateConversation() => clearField(5);
 }
 
 class SendMsgResp extends $pb.GeneratedMessage {

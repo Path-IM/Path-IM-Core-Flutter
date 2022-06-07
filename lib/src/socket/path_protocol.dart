@@ -2,12 +2,12 @@ import 'dart:io';
 
 class PathProtocol {
   static const int getMinAndMaxSeq = 1001; // 获取最新Seq
-  static const int pullMsgBySeqList = 1002; // 使用Seq列表拉取消息
-  static const int getMinAndMaxGroupSeq = 1003; // 获取群聊最新Seq
-  static const int pullMsgByGroupSeqList = 1004; // 使用群聊Seq列表拉取消息
-  static const int sendMsgAndReceipt = 2001; // 发送消息和回执
+  static const int pullMsgBySeqList = 1002; // 使用SeqList拉取消息
+  static const int getMinAndMaxGroupSeq = 1003; // 获取最新群聊Seq
+  static const int pullMsgByGroupSeqList = 1004; // 使用群聊SeqList拉取消息
+  static const int sendAndReceiptMsg = 2001; // 发送和回执消息
   static const int receivePushMsg = 2002; // 接收推送消息
-  static const int receivePushGroupMsg = 2003; // 接收推送群聊消息
+  static const int receiveGroupPushMsg = 2003; // 接收群聊推送消息
 
   /// 获取当前平台
   static String getPlatform() {

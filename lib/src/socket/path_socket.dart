@@ -101,6 +101,7 @@ class PathSocket {
 
   /// 打开脉搏
   void _openPulse() {
+    // 获取最新Seq
     void getSeq() {
       GetMinAndMaxSeqReq seqReq = GetMinAndMaxSeqReq();
       sendData(
@@ -109,6 +110,7 @@ class PathSocket {
       );
     }
 
+    // 获取最新群聊Seq
     void getGroupSeq() async {
       if (groupCallback == null) return;
       List<String> groupIDList = await groupCallback!.groupIDList();
@@ -133,7 +135,7 @@ class PathSocket {
     );
   }
 
-  /// 取消脉搏
+  /// 关闭脉搏
   void _closePulse() {
     if (_pulseTimer != null) {
       _pulseTimer!.cancel();
@@ -166,29 +168,29 @@ class PathSocket {
       case PathProtocol.getMinAndMaxSeq: // 获取最新Seq
         _getMinAndMaxSeq(bodyResp);
         break;
-      case PathProtocol.pullMsgBySeqList: // 使用Seq列表拉取消息
+      case PathProtocol.pullMsgBySeqList: // 使用SeqList拉取消息
         _pullMsgBySeqList(bodyResp);
         break;
       case PathProtocol.getMinAndMaxGroupSeq: // 获取最新群聊Seq
         _getMinAndMaxGroupSeq(bodyResp);
         break;
-      case PathProtocol.pullMsgByGroupSeqList: // 使用群聊Seq列表拉取消息
+      case PathProtocol.pullMsgByGroupSeqList: // 使用群聊SeqList拉取消息
         _pullMsgByGroupSeqList(bodyResp);
         break;
-      case PathProtocol.sendMsgAndReceipt: // 发送消息回执
-        _sendMsgReceipt(bodyResp);
+      case PathProtocol.sendAndReceiptMsg: // 发送和回执消息
+        _receiveReceiptMsg(bodyResp);
         break;
       case PathProtocol.receivePushMsg: // 接收推送消息
         MsgData msg = MsgData.fromBuffer(
           bodyResp.data,
         );
-        _receivePushMsg(msg);
+        _receivePullAndPushMsg(msg);
         break;
-      case PathProtocol.receivePushGroupMsg: // 接收推送群聊消息
+      case PathProtocol.receiveGroupPushMsg: // 接收群聊推送消息
         MsgData msg = MsgData.fromBuffer(
           bodyResp.data,
         );
-        _receivePushGroupMsg(msg);
+        _receivePullAndPushMsg(msg);
         break;
     }
   }
@@ -224,7 +226,7 @@ class PathSocket {
     );
   }
 
-  /// 使用Seq列表拉取消息
+  /// 使用SeqList拉取消息
   void _pullMsgBySeqList(BodyResp bodyResp) {
     if (bodyResp.errCode != 0) return;
     PullMsgListResp resp = PullMsgListResp.fromBuffer(
@@ -232,7 +234,7 @@ class PathSocket {
     );
     List<MsgData> msgList = resp.list;
     for (MsgData msg in msgList) {
-      _receivePushMsg(msg);
+      _receivePullAndPushMsg(msg);
     }
   }
 
@@ -272,7 +274,7 @@ class PathSocket {
     }
   }
 
-  /// 使用群聊Seq列表拉取消息
+  /// 使用群聊SeqList拉取消息
   void _pullMsgByGroupSeqList(BodyResp bodyResp) {
     if (bodyResp.errCode != 0) return;
     PullMsgListResp resp = PullMsgListResp.fromBuffer(
@@ -280,12 +282,12 @@ class PathSocket {
     );
     List<MsgData> msgList = resp.list;
     for (MsgData msg in msgList) {
-      _receivePushGroupMsg(msg);
+      _receivePullAndPushMsg(msg);
     }
   }
 
-  /// 发送消息回执
-  void _sendMsgReceipt(BodyResp bodyResp) {
+  /// 接收回执消息
+  void _receiveReceiptMsg(BodyResp bodyResp) {
     int errCode = bodyResp.errCode;
     String errMsg = bodyResp.errMsg;
     SendMsgResp resp = SendMsgResp.fromBuffer(
@@ -300,14 +302,9 @@ class PathSocket {
     }
   }
 
-  /// 接收推送消息
-  void _receivePushMsg(MsgData msg) {
-    receiveMsgListener?.receiveMsg(msg);
-  }
-
-  /// 接收推送群聊消息
-  void _receivePushGroupMsg(MsgData msg) {
-    receiveMsgListener?.receiveGroupMsg(msg);
+  /// 接收拉取和推送消息
+  void _receivePullAndPushMsg(MsgData msg) {
+    receiveMsgListener?.receive(msg);
   }
 
   /// 发送数据
