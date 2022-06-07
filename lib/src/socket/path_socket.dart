@@ -296,9 +296,9 @@ class PathSocket {
     if (errCode == 0) {
       sendMsgListener?.success(resp);
     } else if (errCode == 1) {
-      sendMsgListener?.failed(resp.clientMsgID, errMsg);
+      sendMsgListener?.failed(resp, errMsg);
     } else if (errCode == 2) {
-      sendMsgListener?.limit(resp.clientMsgID, errMsg);
+      sendMsgListener?.limit(resp, errMsg);
     }
   }
 
