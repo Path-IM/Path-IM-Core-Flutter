@@ -17,11 +17,11 @@
        ),
        groupCallback: GroupCallback(
          onGroupIDList: () async {
-           // 返回登录用户所在群聊ID
-           return ["group1"];
+           // 返回登录用户群聊ID
+           return [""];
          },
          onGroupMaxSeq: (groupID) async {
-           // 返回群聊最大Seq
+           // 根据群聊ID返回群聊最大Seq
            return 0;
          },
        ),
