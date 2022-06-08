@@ -88,10 +88,10 @@
 ### 单聊消息
 
      PathIMCore.instance.sendSingleMsg(
-       clientMsgID: "1654466766000",
+       clientMsgID: "",
        sendID: "",
        receiveID: "",
-       contentType: 1, // 自定义
+       contentType: 1001, // 自定义
        content: utf8.encode(""), // 自定义
        clientTime: Int64(1654466766000),
        offlinePush: OfflinePush(
@@ -112,10 +112,10 @@
 ### 群聊消息
 
      PathIMCore.instance.sendGroupMsg(
-       clientMsgID: "1654466766000",
+       clientMsgID: "",
        sendID: "",
        receiveID: "",
-       contentType: 1, // 自定义
+       contentType: 1001, // 自定义
        content: utf8.encode(""), // 自定义
        clientTime: Int64(1654466766000),
        offlinePush: OfflinePush(
