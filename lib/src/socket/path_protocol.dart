@@ -24,4 +24,21 @@ class PathProtocol {
     }
     return "";
   }
+
+  /// 生成SeqList
+  static List<int> generateSeqList(int seq, int minSeq, int maxSeq) {
+    List<int> seqList = [];
+    if (seq == 0) {
+      seqList = List.generate(maxSeq - minSeq, (index) {
+        return minSeq + index + 1;
+      });
+    } else {
+      if (seq < maxSeq) {
+        seqList = List.generate(maxSeq - seq, (index) {
+          return seq + index + 1;
+        });
+      }
+    }
+    return seqList;
+  }
 }

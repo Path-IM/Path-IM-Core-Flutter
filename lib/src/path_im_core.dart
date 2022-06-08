@@ -5,6 +5,7 @@ import 'package:path_im_core_flutter/src/listener/connect_listener.dart';
 import 'package:path_im_core_flutter/src/listener/receive_msg_listener.dart';
 import 'package:path_im_core_flutter/src/listener/send_msg_listener.dart';
 import 'package:path_im_core_flutter/src/proto/msg.pb.dart';
+import 'package:path_im_core_flutter/src/proto/pull.pb.dart';
 import 'package:path_im_core_flutter/src/socket/path_socket.dart';
 import 'package:fixnum/fixnum.dart';
 
@@ -25,8 +26,9 @@ class PathIMCore {
   /// 初始化
   void init({
     required String wsUrl,
-    Duration pulseDuration = const Duration(seconds: 30),
-    Duration retryDuration = const Duration(seconds: 3),
+    bool autoPullMsg = true,
+    Duration pulseTime = const Duration(seconds: 30),
+    Duration retryTime = const Duration(seconds: 3),
     required UserCallback userCallback,
     GroupCallback? groupCallback,
     ConnectListener? connectListener,
@@ -35,8 +37,9 @@ class PathIMCore {
   }) async {
     _pathSocket = PathSocket(
       wsUrl: wsUrl,
-      pulseDuration: pulseDuration,
-      retryDuration: retryDuration,
+      autoPullMsg: autoPullMsg,
+      pulseTime: pulseTime,
+      retryTime: retryTime,
       userCallback: userCallback,
       groupCallback: groupCallback,
       connectListener: connectListener,
@@ -64,6 +67,36 @@ class PathIMCore {
   /// 是否登录
   bool isLogin() {
     return _pathSocket?.isConnect() ?? false;
+  }
+
+  /// 拉取单聊消息
+  void pullSingleMsg({
+    required List<int> seqList,
+  }) {
+    if (seqList.isEmpty) return;
+    PullMsgBySeqListReq pullSeqListReq = PullMsgBySeqListReq(
+      seqList: seqList,
+    );
+    _pathSocket?.sendData(
+      PathProtocol.pullMsgBySeqList,
+      pullSeqListReq.writeToBuffer(),
+    );
+  }
+
+  /// 拉取群聊消息
+  void pullGroupMsg({
+    required String groupID,
+    required List<int> seqList,
+  }) {
+    if (seqList.isEmpty) return;
+    PullMsgByGroupSeqListReq pullGroupSeqListReq = PullMsgByGroupSeqListReq(
+      groupID: groupID,
+      seqList: seqList,
+    );
+    _pathSocket?.sendData(
+      PathProtocol.pullMsgByGroupSeqList,
+      pullGroupSeqListReq.writeToBuffer(),
+    );
   }
 
   /// 发送单聊消息

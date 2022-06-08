@@ -15,8 +15,9 @@ export 'path_protocol.dart';
 
 class PathSocket {
   final String wsUrl;
-  final Duration pulseDuration;
-  final Duration retryDuration;
+  final bool autoPullMsg;
+  final Duration pulseTime;
+  final Duration retryTime;
   final UserCallback userCallback;
   final GroupCallback? groupCallback;
   final ConnectListener? connectListener;
@@ -25,8 +26,9 @@ class PathSocket {
 
   PathSocket({
     required this.wsUrl,
-    required this.pulseDuration,
-    required this.retryDuration,
+    required this.autoPullMsg,
+    required this.pulseTime,
+    required this.retryTime,
     required this.userCallback,
     this.groupCallback,
     this.connectListener,
@@ -81,7 +83,9 @@ class PathSocket {
         cancelOnError: true,
       );
     connectListener?.success();
-    _openPulse();
+    if (autoPullMsg) {
+      _openPulse();
+    }
     _cancelRetry();
   }
 
@@ -102,7 +106,7 @@ class PathSocket {
   /// 打开脉搏
   void _openPulse() {
     // 获取最新Seq
-    void getSeq() {
+    void getMinAndMaxSeq() {
       GetMinAndMaxSeqReq seqReq = GetMinAndMaxSeqReq();
       sendData(
         PathProtocol.getMinAndMaxSeq,
@@ -111,7 +115,7 @@ class PathSocket {
     }
 
     // 获取最新群聊Seq
-    void getGroupSeq() async {
+    void getMinAndMaxGroupSeq() async {
       if (groupCallback == null) return;
       List<String> groupIDList = await groupCallback!.groupIDList();
       if (groupIDList.isEmpty) return;
@@ -124,13 +128,13 @@ class PathSocket {
       );
     }
 
-    getSeq();
-    getGroupSeq();
+    getMinAndMaxSeq();
+    getMinAndMaxGroupSeq();
     _pulseTimer = Timer.periodic(
-      pulseDuration,
+      pulseTime,
       (timer) {
-        getSeq();
-        getGroupSeq();
+        getMinAndMaxSeq();
+        getMinAndMaxGroupSeq();
       },
     );
   }
@@ -146,7 +150,7 @@ class PathSocket {
   /// 重试连接
   void _retryConnect() {
     _retryTimer = Timer(
-      retryDuration,
+      retryTime,
       () {
         connect(token: token, userID: userID);
       },
@@ -201,22 +205,16 @@ class PathSocket {
     GetMinAndMaxSeqResp resp = GetMinAndMaxSeqResp.fromBuffer(
       bodyResp.data,
     );
+    int seq = await userCallback.maxSeq();
     int minSeq = resp.minSeq;
     int maxSeq = resp.maxSeq;
-    List<int> seqList = [];
-    int value = await userCallback.maxSeq();
-    if (value == 0) {
-      seqList = List.generate(maxSeq - minSeq, (index) {
-        return minSeq + index + 1;
-      });
-    } else {
-      if (value < maxSeq) {
-        seqList = List.generate(maxSeq - value, (index) {
-          return value + index + 1;
-        });
-      }
-    }
+    List<int> seqList = PathProtocol.generateSeqList(
+      seq,
+      minSeq,
+      maxSeq,
+    );
     if (seqList.isEmpty) return;
+    // 使用SeqList拉取消息
     PullMsgBySeqListReq pullSeqListReq = PullMsgBySeqListReq(
       seqList: seqList,
     );
@@ -247,22 +245,16 @@ class PathSocket {
     List<GetMinAndMaxGroupSeqItem> groupSeqList = resp.groupSeqList;
     for (GetMinAndMaxGroupSeqItem item in groupSeqList) {
       String groupID = item.groupID;
+      int seq = await groupCallback!.groupMaxSeq(groupID);
       int minSeq = item.minSeq;
       int maxSeq = item.maxSeq;
-      List<int> seqList = [];
-      int? value = await groupCallback?.groupMaxSeq(groupID);
-      if (value == null || value == 0) {
-        seqList = List.generate(maxSeq - minSeq, (index) {
-          return minSeq + index + 1;
-        });
-      } else {
-        if (value < maxSeq) {
-          seqList = List.generate(maxSeq - value, (index) {
-            return value + index + 1;
-          });
-        }
-      }
+      List<int> seqList = PathProtocol.generateSeqList(
+        seq,
+        minSeq,
+        maxSeq,
+      );
       if (seqList.isEmpty) return;
+      // 使用群聊SeqList拉取消息
       PullMsgByGroupSeqListReq pullGroupSeqListReq = PullMsgByGroupSeqListReq(
         groupID: groupID,
         seqList: seqList,
