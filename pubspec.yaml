@@ -10,8 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  protobuf: 2.0.1
-  fixnum: 1.0.1
+  protobuf: ^2.0.1
+  fixnum: ^1.0.1
 
 dev_dependencies:
   flutter_test:
