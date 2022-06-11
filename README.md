@@ -93,8 +93,8 @@
        conversationType: ConversationType.single,
        sendID: "",
        receiveID: "",
-       contentType: 1001, // 自定义
-       content: utf8.encode(""), // 自定义
+       contentType: 1001,
+       content: utf8.encode(""),
        clientTime: Int64(1654466766000),
        offlinePush: OfflinePush(
          title: "",
@@ -118,8 +118,8 @@
        conversationType: ConversationType.group,
        sendID: "",
        receiveID: "",
-       contentType: 1001, // 自定义
-       content: utf8.encode(""), // 自定义
+       contentType: 1001,
+       content: utf8.encode(""),
        clientTime: Int64(1654466766000),
        offlinePush: OfflinePush(
          title: "",
