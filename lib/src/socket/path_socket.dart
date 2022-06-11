@@ -65,30 +65,37 @@ class PathSocket {
         },
       ).toString(),
     );
-    _webSocket = await WebSocket.connect(url)
-      ..listen(
-        _receiveData,
-        onError: (error) {
-          connectListener?.error(error);
-        },
-        onDone: () async {
-          _closePull();
-          if (_webSocket != null) {
-            await _webSocket?.close();
-            _webSocket = null;
-          }
-          if (autoRetry && _canRetry == true) {
+    try {
+      _webSocket = await WebSocket.connect(url)
+        ..listen(
+          _receiveData,
+          onError: (error) {
+            connectListener?.error(error);
+          },
+          onDone: () async {
+            _closePull();
+            if (_webSocket != null) {
+              await _webSocket?.close();
+              _webSocket = null;
+            }
             _retryConnect();
-          }
-          connectListener?.close();
-        },
-        cancelOnError: true,
-      );
-    connectListener?.success();
-    if (autoPull) {
-      _openPull();
+            connectListener?.close();
+          },
+          cancelOnError: true,
+        );
+      connectListener?.success();
+      if (autoPull) {
+        _openPull();
+      }
+      _cancelRetry();
+    } catch (_) {
+      if (_webSocket != null) {
+        await _webSocket?.close();
+        _webSocket = null;
+      }
+      _retryConnect();
+      connectListener?.close();
     }
-    _cancelRetry();
   }
 
   /// 断开连接
@@ -96,8 +103,10 @@ class PathSocket {
     _closePull();
     _cancelRetry();
     _canRetry = false;
-    await _webSocket?.close();
-    _webSocket = null;
+    if (_webSocket != null) {
+      await _webSocket?.close();
+      _webSocket = null;
+    }
   }
 
   /// 是否连接
@@ -151,6 +160,8 @@ class PathSocket {
 
   /// 重试连接
   void _retryConnect() {
+    _cancelRetry();
+    if (!autoRetry || _canRetry == false) return;
     _retryTimer = Timer(
       retryTime,
       () {
