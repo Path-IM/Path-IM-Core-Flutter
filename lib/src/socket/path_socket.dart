@@ -15,8 +15,9 @@ export 'path_protocol.dart';
 
 class PathSocket {
   final String wsUrl;
-  final bool autoPullMsg;
-  final Duration pulseTime;
+  final bool autoPull;
+  final Duration pullTime;
+  final bool autoRetry;
   final Duration retryTime;
   final UserCallback userCallback;
   final GroupCallback? groupCallback;
@@ -26,8 +27,9 @@ class PathSocket {
 
   PathSocket({
     required this.wsUrl,
-    required this.autoPullMsg,
-    required this.pulseTime,
+    required this.autoPull,
+    required this.pullTime,
+    required this.autoRetry,
     required this.retryTime,
     required this.userCallback,
     this.groupCallback,
@@ -40,9 +42,9 @@ class PathSocket {
   late String userID;
 
   WebSocket? _webSocket;
-  Timer? _pulseTimer;
-  Timer? _retryTimer;
+  Timer? _pullTimer;
   bool? _canRetry;
+  Timer? _retryTimer;
 
   /// 建立连接
   Future connect({
@@ -70,12 +72,12 @@ class PathSocket {
           connectListener?.error(error);
         },
         onDone: () async {
-          _closePulse();
+          _closePull();
           if (_webSocket != null) {
             await _webSocket?.close();
             _webSocket = null;
           }
-          if (_canRetry == true) {
+          if (autoRetry && _canRetry == true) {
             _retryConnect();
           }
           connectListener?.close();
@@ -83,15 +85,15 @@ class PathSocket {
         cancelOnError: true,
       );
     connectListener?.success();
-    if (autoPullMsg) {
-      _openPulse();
+    if (autoPull) {
+      _openPull();
     }
     _cancelRetry();
   }
 
   /// 断开连接
   Future disconnect() async {
-    _closePulse();
+    _closePull();
     _cancelRetry();
     _canRetry = false;
     await _webSocket?.close();
@@ -103,8 +105,8 @@ class PathSocket {
     return _webSocket != null;
   }
 
-  /// 打开脉搏
-  void _openPulse() {
+  /// 打开拉取
+  void _openPull() {
     // 获取最新Seq
     void getMinAndMaxSeq() {
       GetMinAndMaxSeqReq seqReq = GetMinAndMaxSeqReq();
@@ -130,8 +132,8 @@ class PathSocket {
 
     getMinAndMaxSeq();
     getMinAndMaxGroupSeq();
-    _pulseTimer = Timer.periodic(
-      pulseTime,
+    _pullTimer = Timer.periodic(
+      pullTime,
       (timer) {
         getMinAndMaxSeq();
         getMinAndMaxGroupSeq();
@@ -139,11 +141,11 @@ class PathSocket {
     );
   }
 
-  /// 关闭脉搏
-  void _closePulse() {
-    if (_pulseTimer != null) {
-      _pulseTimer!.cancel();
-      _pulseTimer = null;
+  /// 关闭拉取
+  void _closePull() {
+    if (_pullTimer != null) {
+      _pullTimer!.cancel();
+      _pullTimer = null;
     }
   }
 

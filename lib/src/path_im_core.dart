@@ -26,8 +26,9 @@ class PathIMCore {
   /// 初始化
   void init({
     required String wsUrl,
-    bool autoPullMsg = true,
-    Duration pulseTime = const Duration(seconds: 30),
+    bool autoPull = true,
+    Duration pullTime = const Duration(seconds: 30),
+    bool autoRetry = true,
     Duration retryTime = const Duration(seconds: 3),
     required UserCallback userCallback,
     GroupCallback? groupCallback,
@@ -37,8 +38,9 @@ class PathIMCore {
   }) async {
     _pathSocket = PathSocket(
       wsUrl: wsUrl,
-      autoPullMsg: autoPullMsg,
-      pulseTime: pulseTime,
+      autoPull: autoPull,
+      pullTime: pullTime,
+      autoRetry: autoRetry,
       retryTime: retryTime,
       userCallback: userCallback,
       groupCallback: groupCallback,
@@ -99,9 +101,10 @@ class PathIMCore {
     );
   }
 
-  /// 发送单聊消息
-  void sendSingleMsg({
+  /// 发送消息
+  void sendMsg({
     required String clientMsgID,
+    required int conversationType,
     required String sendID,
     required String receiveID,
     required int contentType,
@@ -111,42 +114,12 @@ class PathIMCore {
     OfflinePush? offlinePush,
     required MsgOptions msgOptions,
   }) {
+    assert(conversationType >= ConversationType.single &&
+        conversationType <= ConversationType.group);
     SendMsgReq sendMsgReq = SendMsgReq(
       msgData: MsgData(
         clientMsgID: clientMsgID,
-        conversationType: ConversationType.single,
-        sendID: sendID,
-        receiveID: receiveID,
-        contentType: contentType,
-        content: content,
-        atUserIDList: atUserIDList,
-        clientTime: clientTime,
-        offlinePush: offlinePush,
-        msgOptions: msgOptions,
-      ),
-    );
-    _pathSocket?.sendData(
-      PathProtocol.sendAndReceiptMsg,
-      sendMsgReq.writeToBuffer(),
-    );
-  }
-
-  /// 发送群聊消息
-  void sendGroupMsg({
-    required String clientMsgID,
-    required String sendID,
-    required String receiveID,
-    required int contentType,
-    required List<int> content,
-    List<String>? atUserIDList,
-    required Int64 clientTime,
-    OfflinePush? offlinePush,
-    required MsgOptions msgOptions,
-  }) {
-    SendMsgReq sendMsgReq = SendMsgReq(
-      msgData: MsgData(
-        clientMsgID: clientMsgID,
-        conversationType: ConversationType.group,
+        conversationType: conversationType,
         sendID: sendID,
         receiveID: receiveID,
         contentType: contentType,

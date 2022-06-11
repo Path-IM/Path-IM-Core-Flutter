@@ -1,14 +1,15 @@
 # Path-IM-Core-Flutter
 
-实现最基础的通讯协议。有高度定制IM需求的开发者，可以使用这个项目。
+实现最基础的通讯协议，完全可自主控制，可高度定制化IM等需求。
 
 ## 初始化
 
      PathIMCore.instance.init(
        wsUrl: "",
-       autoPullMsg: true, // 是否自动拉取
-       pulseTime: const Duration(seconds: 30), // 自动拉取间隔时间
-       retryTime: const Duration(seconds: 3), // 断开重试间隔时间
+       autoPull: true, // 自动拉取
+       pullTime: const Duration(seconds: 30), // 拉取间隔时间
+       autoRetry: true, // 自动重试
+       retryTime: const Duration(seconds: 3), // 重试间隔时间
        userCallback: UserCallback(
          onMaxSeq: () async {
            // 返回登录用户最大Seq
@@ -75,20 +76,21 @@
 
 ## 主动拉取
 
-### 单聊消息
+### 单聊
 
      PathIMCore.instance.pullSingleMsg(seqList: []);
 
-### 群聊消息
+### 群聊
 
      PathIMCore.instance.pullGroupMsg(groupID: "", seqList: []);
 
 ## 发送消息
 
-### 单聊消息
+### 单聊
 
-     PathIMCore.instance.sendSingleMsg(
+     PathIMCore.instance.sendMsg(
        clientMsgID: "",
+       conversationType: ConversationType.single,
        sendID: "",
        receiveID: "",
        contentType: 1001, // 自定义
@@ -109,10 +111,11 @@
        ),
      );
 
-### 群聊消息
+### 群聊
 
-     PathIMCore.instance.sendGroupMsg(
+     PathIMCore.instance.sendMsg(
        clientMsgID: "",
+       conversationType: ConversationType.group,
        sendID: "",
        receiveID: "",
        contentType: 1001, // 自定义
