@@ -1,6 +1,8 @@
 # Path-IM-Core-Flutter
 
-实现最基础的通讯协议，完全可自主控制，可高度定制化IM需求。
+[![Pub](https://img.shields.io/pub/v/path_im_core_flutter.svg?style=flat-square)](https://pub.dev/packages/path_im_core_flutter)
+
+支持Flutter5端开发。实现最基础的通讯协议，完全可自主控制，可高度定制化IM需求。
 
 ## 初始化
 
