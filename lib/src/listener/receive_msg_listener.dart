@@ -2,13 +2,19 @@ import 'package:path_im_core_flutter/src/proto/msg.pb.dart';
 
 /// 接收消息监听
 class ReceiveMsgListener {
-  final Function(MsgData msgData)? onReceive; // 接收消息
+  final Function(List<MsgData> msgList)? onPullMsg; // 拉取消息
+  final Function(MsgData msg)? onPushMsg; // 推送消息
 
   ReceiveMsgListener({
-    this.onReceive,
+    this.onPullMsg,
+    this.onPushMsg,
   });
 
-  void receive(MsgData msgData) {
-    if (onReceive != null) onReceive!(msgData);
+  void pullMsg(List<MsgData> msgList) {
+    if (onPullMsg != null) onPullMsg!(msgList);
+  }
+
+  void pushMsg(MsgData msg) {
+    if (onPushMsg != null) onPushMsg!(msg);
   }
 }

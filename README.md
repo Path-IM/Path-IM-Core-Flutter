@@ -43,12 +43,15 @@
          },
        ),
        receiveMsgListener: ReceiveMsgListener(
-         onReceive: (msg) {
+         onPullMsg: (msgList){
+           // 拉取消息列表
+         },
+         onPushMsg: (msg) {
            if (msg.serverMsgID.isEmpty) return;
            if (msg.conversationType == ConversationType.single) {
-             // 接收单聊消息
+             // 推送单聊消息
            } else if (msg.conversationType == ConversationType.group) {
-             // 接收群聊消息
+             // 推送群聊消息
            }
          },
        ),

@@ -198,16 +198,10 @@ class PathSocket {
         _receiveReceiptMsg(bodyResp);
         break;
       case PathProtocol.receivePushMsg: // 接收推送消息
-        MsgData msg = MsgData.fromBuffer(
-          bodyResp.data,
-        );
-        _receivePullAndPushMsg(msg);
+        _receivePushMsg(bodyResp);
         break;
       case PathProtocol.receiveGroupPushMsg: // 接收群聊推送消息
-        MsgData msg = MsgData.fromBuffer(
-          bodyResp.data,
-        );
-        _receivePullAndPushMsg(msg);
+        _receivePushMsg(bodyResp);
         break;
     }
   }
@@ -243,10 +237,7 @@ class PathSocket {
     PullMsgListResp resp = PullMsgListResp.fromBuffer(
       bodyResp.data,
     );
-    List<MsgData> msgList = resp.list;
-    for (MsgData msg in msgList) {
-      _receivePullAndPushMsg(msg);
-    }
+    receiveMsgListener?.pullMsg(resp.list);
   }
 
   /// 获取最新群聊Seq
@@ -285,10 +276,7 @@ class PathSocket {
     PullMsgListResp resp = PullMsgListResp.fromBuffer(
       bodyResp.data,
     );
-    List<MsgData> msgList = resp.list;
-    for (MsgData msg in msgList) {
-      _receivePullAndPushMsg(msg);
-    }
+    receiveMsgListener?.pullMsg(resp.list);
   }
 
   /// 接收回执消息
@@ -307,9 +295,13 @@ class PathSocket {
     }
   }
 
-  /// 接收拉取和推送消息
-  void _receivePullAndPushMsg(MsgData msg) {
-    receiveMsgListener?.receive(msg);
+  /// 接收推送消息
+  void _receivePushMsg(BodyResp bodyResp) {
+    if (bodyResp.errCode != 0) return;
+    MsgData msg = MsgData.fromBuffer(
+      bodyResp.data,
+    );
+    receiveMsgListener?.pushMsg(msg);
   }
 
   /// 发送数据
