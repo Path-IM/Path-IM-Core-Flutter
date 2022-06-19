@@ -1,6 +1,7 @@
 ## 1.0.2
 
 1、Adjust receive message </br>
+2、Fix connect error </br>
 
 ## 1.0.1
 
