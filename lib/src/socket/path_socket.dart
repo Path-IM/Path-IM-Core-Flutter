@@ -16,9 +16,7 @@ export 'path_protocol.dart';
 class PathSocket {
   final String wsUrl;
   final bool autoPull;
-  final Duration pullTime;
-  final bool autoRetry;
-  final Duration retryTime;
+  final Duration autoPullTime;
   final UserCallback userCallback;
   final GroupCallback? groupCallback;
   final ConnectListener? connectListener;
@@ -28,9 +26,7 @@ class PathSocket {
   PathSocket({
     required this.wsUrl,
     required this.autoPull,
-    required this.pullTime,
-    required this.autoRetry,
-    required this.retryTime,
+    required this.autoPullTime,
     required this.userCallback,
     this.groupCallback,
     this.connectListener,
@@ -43,8 +39,6 @@ class PathSocket {
 
   WebSocket? _webSocket;
   Timer? _pullTimer;
-  bool? _canRetry;
-  Timer? _retryTimer;
 
   /// 建立连接
   Future connect({
@@ -53,7 +47,6 @@ class PathSocket {
   }) async {
     this.token = token;
     this.userID = userID;
-    _canRetry = true;
     connectListener?.connecting();
     String url = Uri.decodeFull(
       Uri(
@@ -73,12 +66,7 @@ class PathSocket {
             connectListener?.error(error);
           },
           onDone: () async {
-            _closePull();
-            if (_webSocket != null) {
-              await _webSocket?.close();
-              _webSocket = null;
-            }
-            _retryConnect();
+            disconnect();
             connectListener?.close();
           },
           cancelOnError: true,
@@ -87,13 +75,8 @@ class PathSocket {
       if (autoPull) {
         _openPull();
       }
-      _cancelRetry();
     } catch (_) {
-      if (_webSocket != null) {
-        await _webSocket?.close();
-        _webSocket = null;
-      }
-      _retryConnect();
+      disconnect();
       connectListener?.close();
     }
   }
@@ -101,8 +84,6 @@ class PathSocket {
   /// 断开连接
   Future disconnect() async {
     _closePull();
-    _cancelRetry();
-    _canRetry = false;
     if (_webSocket != null) {
       await _webSocket?.close();
       _webSocket = null;
@@ -142,7 +123,7 @@ class PathSocket {
     getMinAndMaxSeq();
     getMinAndMaxGroupSeq();
     _pullTimer = Timer.periodic(
-      pullTime,
+      autoPullTime,
       (timer) {
         getMinAndMaxSeq();
         getMinAndMaxGroupSeq();
@@ -155,26 +136,6 @@ class PathSocket {
     if (_pullTimer != null) {
       _pullTimer!.cancel();
       _pullTimer = null;
-    }
-  }
-
-  /// 重试连接
-  void _retryConnect() {
-    _cancelRetry();
-    if (!autoRetry || _canRetry == false) return;
-    _retryTimer = Timer(
-      retryTime,
-      () {
-        connect(token: token, userID: userID);
-      },
-    );
-  }
-
-  /// 取消重试
-  void _cancelRetry() {
-    if (_retryTimer != null) {
-      _retryTimer!.cancel();
-      _retryTimer = null;
     }
   }
 

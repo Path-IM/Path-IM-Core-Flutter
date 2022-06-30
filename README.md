@@ -9,9 +9,7 @@
      PathIMCore.instance.init(
        wsUrl: "",
        autoPull: true, // 自动拉取
-       pullTime: const Duration(seconds: 30), // 拉取间隔时间
-       autoRetry: true, // 自动重试
-       retryTime: const Duration(seconds: 3), // 重试间隔时间
+       autoPullTime: const Duration(seconds: 30), // 自动拉取时间
        userCallback: UserCallback(
          onMaxSeq: () async {
            // 返回登录用户最大Seq
@@ -20,7 +18,7 @@
        ),
        groupCallback: GroupCallback(
          onGroupIDList: () async {
-           // 返回登录用户群聊ID
+           // 返回登录用户群聊IDList
            return [""];
          },
          onGroupMaxSeq: (groupID) async {

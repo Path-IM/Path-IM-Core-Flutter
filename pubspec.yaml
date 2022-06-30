@@ -1,6 +1,6 @@
 name: path_im_core_flutter
 description: Easy implementation of chat application based on pathim communication protocol!
-version: 1.0.2
+version: 1.0.3
 homepage: https://doc.pathim.cn
 repository: https://github.com/Path-IM/Path-IM-Core-Flutter
 
@@ -17,7 +17,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: 2.0.1
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

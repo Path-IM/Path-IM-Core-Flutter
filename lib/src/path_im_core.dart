@@ -27,9 +27,7 @@ class PathIMCore {
   void init({
     required String wsUrl,
     bool autoPull = true,
-    Duration pullTime = const Duration(seconds: 30),
-    bool autoRetry = true,
-    Duration retryTime = const Duration(seconds: 3),
+    Duration autoPullTime = const Duration(seconds: 25),
     required UserCallback userCallback,
     GroupCallback? groupCallback,
     ConnectListener? connectListener,
@@ -39,9 +37,7 @@ class PathIMCore {
     _pathSocket = PathSocket(
       wsUrl: wsUrl,
       autoPull: autoPull,
-      pullTime: pullTime,
-      autoRetry: autoRetry,
-      retryTime: retryTime,
+      autoPullTime: autoPullTime,
       userCallback: userCallback,
       groupCallback: groupCallback,
       connectListener: connectListener,
