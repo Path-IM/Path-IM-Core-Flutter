@@ -9,7 +9,7 @@
      PathIMCore.instance.init(
        wsUrl: "",
        autoPull: true, // 自动拉取
-       autoPullTime: const Duration(seconds: 30), // 自动拉取时间
+       autoPullTime: const Duration(seconds: 25), // 自动拉取时间
        userCallback: UserCallback(
          onMaxSeq: () async {
            // 返回用户MaxSeq
