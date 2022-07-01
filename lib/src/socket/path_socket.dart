@@ -47,18 +47,18 @@ class PathSocket {
   }) async {
     this.token = token;
     this.userID = userID;
-    connectListener?.connecting();
-    String url = Uri.decodeFull(
-      Uri(
-        path: wsUrl,
-        queryParameters: {
-          "token": token,
-          "userID": userID,
-          "platform": PathProtocol.getPlatform(),
-        },
-      ).toString(),
-    );
     try {
+      connectListener?.connecting();
+      String url = Uri.decodeFull(
+        Uri(
+          path: wsUrl,
+          queryParameters: {
+            "token": token,
+            "userID": userID,
+            "platform": PathProtocol.getPlatform(),
+          },
+        ).toString(),
+      );
       _webSocket = await WebSocket.connect(url)
         ..listen(
           _receiveData,

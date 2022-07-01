@@ -12,17 +12,17 @@
        autoPullTime: const Duration(seconds: 30), // 自动拉取时间
        userCallback: UserCallback(
          onMaxSeq: () async {
-           // 返回登录用户最大Seq
+           // 返回用户MaxSeq
            return 0;
          },
        ),
        groupCallback: GroupCallback(
          onGroupIDList: () async {
-           // 返回登录用户群聊IDList
+           // 返回用户群聊IDList
            return [""];
          },
          onGroupMaxSeq: (groupID) async {
-           // 根据群聊ID返回群聊最大Seq
+           // 根据群聊ID返回群聊MaxSeq
            return 0;
          },
        ),
