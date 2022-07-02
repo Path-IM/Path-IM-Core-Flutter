@@ -1,6 +1,6 @@
 name: path_im_core_flutter
 description: Easy implementation of chat application based on pathim communication protocol!
-version: 1.0.4
+version: 1.0.5
 homepage: https://doc.pathim.cn
 repository: https://github.com/Path-IM/Path-IM-Core-Flutter
 

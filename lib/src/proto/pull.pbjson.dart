@@ -8,6 +8,7 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
+
 @$core.Deprecated('Use pullMsgBySeqListReqDescriptor instead')
 const PullMsgBySeqListReq$json = const {
   '1': 'PullMsgBySeqListReq',
@@ -17,7 +18,9 @@ const PullMsgBySeqListReq$json = const {
 };
 
 /// Descriptor for `PullMsgBySeqListReq`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List pullMsgBySeqListReqDescriptor = $convert.base64Decode('ChNQdWxsTXNnQnlTZXFMaXN0UmVxEhgKB3NlcUxpc3QYASADKA1SB3NlcUxpc3Q=');
+final $typed_data.Uint8List pullMsgBySeqListReqDescriptor =
+    $convert.base64Decode(
+        'ChNQdWxsTXNnQnlTZXFMaXN0UmVxEhgKB3NlcUxpc3QYASADKA1SB3NlcUxpc3Q=');
 @$core.Deprecated('Use pullMsgByGroupSeqListReqDescriptor instead')
 const PullMsgByGroupSeqListReq$json = const {
   '1': 'PullMsgByGroupSeqListReq',
@@ -28,14 +31,24 @@ const PullMsgByGroupSeqListReq$json = const {
 };
 
 /// Descriptor for `PullMsgByGroupSeqListReq`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List pullMsgByGroupSeqListReqDescriptor = $convert.base64Decode('ChhQdWxsTXNnQnlHcm91cFNlcUxpc3RSZXESGAoHZ3JvdXBJRBgBIAEoCVIHZ3JvdXBJRBIYCgdzZXFMaXN0GAIgAygNUgdzZXFMaXN0');
+final $typed_data.Uint8List pullMsgByGroupSeqListReqDescriptor =
+    $convert.base64Decode(
+        'ChhQdWxsTXNnQnlHcm91cFNlcUxpc3RSZXESGAoHZ3JvdXBJRBgBIAEoCVIHZ3JvdXBJRBIYCgdzZXFMaXN0GAIgAygNUgdzZXFMaXN0');
 @$core.Deprecated('Use pullMsgListRespDescriptor instead')
 const PullMsgListResp$json = const {
   '1': 'PullMsgListResp',
   '2': const [
-    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.pb.MsgData', '10': 'list'},
+    const {
+      '1': 'list',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.pb.MsgData',
+      '10': 'list'
+    },
   ],
 };
 
 /// Descriptor for `PullMsgListResp`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List pullMsgListRespDescriptor = $convert.base64Decode('Cg9QdWxsTXNnTGlzdFJlc3ASHwoEbGlzdBgBIAMoCzILLnBiLk1zZ0RhdGFSBGxpc3Q=');
+final $typed_data.Uint8List pullMsgListRespDescriptor = $convert.base64Decode(
+    'Cg9QdWxsTXNnTGlzdFJlc3ASHwoEbGlzdBgBIAMoCzILLnBiLk1zZ0RhdGFSBGxpc3Q=');
