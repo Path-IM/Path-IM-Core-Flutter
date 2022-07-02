@@ -1,3 +1,7 @@
+## 1.0.4
+
+1、Fix socket error </br>
+
 ## 1.0.3
 
 1、Delete reconnection </br>

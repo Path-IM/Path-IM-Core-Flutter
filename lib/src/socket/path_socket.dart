@@ -66,7 +66,7 @@ class PathSocket {
             connectListener?.error(error);
           },
           onDone: () async {
-            disconnect();
+            await disconnect();
             connectListener?.close();
           },
           cancelOnError: true,
@@ -76,7 +76,7 @@ class PathSocket {
         _openPull();
       }
     } catch (_) {
-      disconnect();
+      await disconnect();
       connectListener?.close();
     }
   }
@@ -84,8 +84,8 @@ class PathSocket {
   /// 断开连接
   Future disconnect() async {
     _closePull();
-    if (_webSocket != null) {
-      await _webSocket?.close();
+    if (isConnect()) {
+      await _webSocket!.close();
       _webSocket = null;
     }
   }
@@ -267,12 +267,14 @@ class PathSocket {
 
   /// 发送数据
   void sendData(int reqIdentifier, List<int> data) {
-    BodyReq bodyReq = BodyReq(
-      reqIdentifier: reqIdentifier,
-      token: token,
-      sendID: userID,
-      data: data,
-    );
-    _webSocket?.add(bodyReq.writeToBuffer());
+    try {
+      BodyReq bodyReq = BodyReq(
+        reqIdentifier: reqIdentifier,
+        token: token,
+        sendID: userID,
+        data: data,
+      );
+      _webSocket?.add(bodyReq.writeToBuffer());
+    } catch (_) {}
   }
 }
